@@ -5,7 +5,31 @@ from conda import __version__ as CONDA_VERSION
 
 CONDA_VERSION_MAJOR_MINOR = tuple(int(x) for x in CONDA_VERSION.split('.')[:2])
 
-if (4, 3) <= CONDA_VERSION_MAJOR_MINOR < (4, 4):
+if (4, 4) <= CONDA_VERSION_MAJOR_MINOR < (4, 5):
+    from conda.lock import Locked
+    from conda.exports import get_index
+    from conda.exports import subdir
+    from conda.exports import MatchSpec
+    from conda.exports import Unsatisfiable
+    from conda.exports import NoPackagesFound
+    from conda.exports import Resolve
+    from conda.exports import string_types
+    from conda.models.dist import Dist as _Dist
+
+    def get_key(dist_or_filename):
+        return dist_or_filename
+
+    def copy_index(index):
+        return {_Dist(key): index[key] for key in index.keys()}
+
+    def ensure_dist_or_dict(fn):
+        return _Dist.from_string(fn)
+
+    from conda.gateways.logging import initialize_logging, set_verbosity
+    initialize_logging()
+    set_verbosity(1)
+
+elif (4, 3) <= CONDA_VERSION_MAJOR_MINOR < (4, 4):
     from conda.lock import Locked
     from conda.exports import get_index
     from conda.exports import subdir
