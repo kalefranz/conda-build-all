@@ -46,7 +46,7 @@ class DummyPackage(_DummyPackage):
 
 class DummyIndex(dict):
     def add_pkg(self, name, version, build_string='',
-                depends=(), build_number='0',
+                depends=(), build_number=0,
                 **extra_items):
         if build_string:
             build_string = '{}_{}'.format(build_string, build_number)
