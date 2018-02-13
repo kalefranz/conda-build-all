@@ -30,12 +30,13 @@ if (4, 4) <= CONDA_VERSION_MAJOR_MINOR < (4, 5):
 
     from conda.exports import Resolve as _Resolve
     from conda.models.index_record import PackageRecord as _PackageRecord
+    from conda.models.dist import Dist as _Dist
 
     class Resolve(_Resolve):
         def __init__(self, index):
             # ensure conversion of dicts to PackageRecord objects
             super(Resolve, self).__init__(
-                {dist: _PackageRecord.from_objects(rec) for dist, rec in index.items()}
+                {_Dist(dist): _PackageRecord.from_objects(rec) for dist, rec in index.items()}
             )
 
 elif (4, 3) <= CONDA_VERSION_MAJOR_MINOR < (4, 4):
