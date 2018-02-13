@@ -12,7 +12,6 @@ if (4, 4) <= CONDA_VERSION_MAJOR_MINOR < (4, 5):
     from conda.exports import MatchSpec
     from conda.exports import Unsatisfiable
     from conda.exports import NoPackagesFound
-    from conda.exports import Resolve
     from conda.exports import string_types
     from conda.models.dist import Dist as _Dist
 
@@ -28,6 +27,16 @@ if (4, 4) <= CONDA_VERSION_MAJOR_MINOR < (4, 5):
     from conda.gateways.logging import initialize_logging, set_verbosity
     initialize_logging()
     set_verbosity(1)
+
+    from conda.exports import Resolve as _Resolve
+    from conda.models.index_record import PackageRecord as _PackageRecord
+
+    class Resolve(_Resolve):
+        def __init__(self, index):
+            # ensure conversion of dicts to PackageRecord objects
+            super(Resolve, self).__init__(
+                {dist: _PackageRecord.from_objects(rec) for dist, rec in index.items()}
+            )
 
 elif (4, 3) <= CONDA_VERSION_MAJOR_MINOR < (4, 4):
     from conda.lock import Locked
